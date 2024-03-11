@@ -57,7 +57,6 @@ export default function Session({ userSession, results }) {
 		if (!results) {
 			return;
 		}
-		console.log(results);
 		setResult(JSON.parse(results));
 	}, [results]);
 

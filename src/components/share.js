@@ -53,7 +53,6 @@ export default function ShareModal({ userSession }) {
 	};
 
 	React.useEffect(() => {
-		console.log('router', router.query.sid);
 		if (!router.query.sid) {
 			return;
 		}
