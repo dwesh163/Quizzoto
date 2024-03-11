@@ -4,6 +4,7 @@ db.createCollection('results');
 db.createCollection('quizzs');
 db.createCollection('sessions');
 db.createCollection('users');
+db.createCollection('links');
 
 db.quizzs.insert([
 	{
