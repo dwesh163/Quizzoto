@@ -57,6 +57,7 @@ export default function Session({ userSession, results }) {
 		if (!results) {
 			return;
 		}
+		console.log(results);
 		setResult(JSON.parse(results));
 	}, [results]);
 
@@ -87,8 +88,10 @@ export default function Session({ userSession, results }) {
 									</Box>
 									<Box gridColumn="span 6" style={{ display: 'flex', alignItems: 'center' }}>
 										<ShareModal userSession={userSession} />
-										<a target="_blank" href={`${new URL(window.location.href).origin}/quizz/${quizzs.quizzSlug}?s=${quizzs.sessionId}&q=1`}>{`${new URL(window.location.href).origin}/quizz/${quizzs.quizzSlug}?s=${quizzs.sessionId}&q=1`}</a>
-										<QRCode url={`${new URL(window.location.href).origin}/quizz/${quizzs.quizzSlug}?s=${quizzs.sessionId}&q=1`} />
+										<a target="_blank" href={new URL(window.location.href).origin + quizzs.link}>
+											{new URL(window.location.href).origin + quizzs.link}
+										</a>
+										<QRCode url={new URL(window.location.href).origin + quizzs.link} />
 									</Box>
 								</Box>
 								<SessionTable data={quizzs.results} style={{ width: '100%', height: '100%' }} />
