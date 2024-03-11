@@ -86,7 +86,6 @@ const BtnStyleSecondary = {
 };
 
 const QuizzInfo = ({ quizzInfo }) => {
-	console.log(quizzInfo);
 	return (
 		<table>
 			<tbody>
@@ -142,10 +141,10 @@ export default function Welcome({ quizz }) {
 			})
 			.then((data) => {
 				const query = { ...router.query };
-				query.s = data._id;
+				query.s = data.id;
 				query.q = '1';
 				router.push({
-					pathname: `/session/${data._id}`,
+					pathname: `/session/${data.id}`,
 				});
 			})
 			.catch((error) => {
