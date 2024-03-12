@@ -2,9 +2,9 @@ db = db.getSiblingDB('quizzoto');
 
 db.createCollection('results');
 db.createCollection('quizzs');
-db.createCollection('sessions');
 db.createCollection('users');
 db.createCollection('links');
+db.createCollection('rooms');
 
 db.quizzs.insert([
 	{

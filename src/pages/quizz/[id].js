@@ -101,7 +101,6 @@ export default function Quizz() {
 	}, [router.query.q]);
 
 	function getResult(UserAnswer) {
-		console.log('router.query', router.query);
 		setQuizzResult(router.query.id, UserAnswer, router.query.r, session)
 			.then((result) => {
 				if (!localStorage.getItem('id')) {
