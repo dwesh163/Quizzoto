@@ -23,7 +23,6 @@ export default async function handler(req, res) {
 	req.body = JSON.parse(req.body);
 
 	let quizzId = null;
-	console.log('req.query', req.query);
 	let roomId = req.query.roomId;
 
 	if (mongodb.ObjectId.isValid(req.query.qid)) {

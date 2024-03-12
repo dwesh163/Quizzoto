@@ -5,7 +5,6 @@ import { getSession, useSession } from 'next-auth/react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useQRCode } from 'next-qrcode';
 
 import Header from '../../components/header/header';
 import ShareModal from '../../components/share';
@@ -33,26 +32,6 @@ const BoxStyle = {
 	paddingTop: '0px',
 	paddingLeft: '2.5rem',
 };
-
-function QRCode({ url }) {
-	const { Canvas } = useQRCode();
-
-	return (
-		<Canvas
-			text={url}
-			options={{
-				errorCorrectionLevel: 'M',
-				margin: 3,
-				scale: 4,
-				width: 200,
-				color: {
-					dark: '#696f79',
-					light: '#fff',
-				},
-			}}
-		/>
-	);
-}
 
 export default function Session({ userSession, results, linkInfo, room }) {
 	const [session, setSession] = useState(userSession);
@@ -126,7 +105,9 @@ export default function Session({ userSession, results, linkInfo, room }) {
 										<Box sx={{ display: 'flex', gap: '12px' }}>
 											<ShareModal userSession={userSession} />
 											<Box>
-												<Button variant="contained">Open Invite menu</Button>
+												<Button variant="contained" target="_blank" href={linkInfo.join}>
+													Open Invite menu
+												</Button>
 											</Box>
 											<Box>
 												<Button variant="contained" onClick={copyToClipboard}>
@@ -166,7 +147,6 @@ export default function Session({ userSession, results, linkInfo, room }) {
 										{/* <a target="_blank" href={new URL(window.location.href).origin + linkInfo.linkShort}>
 											{linkInfo.linkShort}
 										</a> */}
-										{/* <QRCode url={new URL(window.location.href).origin + linkInfo.linkShort} /> */}
 									</Box>
 								</Box>
 								<RoomTable data={quizzs.results} sx={{ width: '100%', height: '100%' }} />
@@ -190,6 +170,10 @@ export async function getServerSideProps(context) {
 	const results = await getRoomResults(session, rid);
 	const linkInfo = await getLinkInfo(session, rid);
 	const room = await getRoomInfo(session, rid);
+
+	const url = context['req']['headers']['x-forwarded-proto'] + '://' + context.req.headers.host + '/join/' + linkInfo.linkShort.split('/')[2];
+
+	linkInfo.join = url;
 
 	return {
 		props: {
