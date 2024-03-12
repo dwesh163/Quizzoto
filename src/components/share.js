@@ -91,7 +91,7 @@ export default function ShareModal({ userSession }) {
 	const renderUserButtons = () => {
 		return filteredUsers.map((user, index) => (
 			<div key={index}>
-				<Button style={{ display: 'flex', justifyContent: 'space-between', width: '100%', color: '#696f79', backgroundColor: user.username === userSession.user.username ? 'rgb(246, 246, 246)' : '' }} onClick={() => shareUser(user)} disabled={user.username === userSession.user.username}>
+				<Button sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', color: '#696f79', backgroundColor: user.username === userSession.user.username ? 'rgb(246, 246, 246)' : '' }} onClick={() => shareUser(user)} disabled={user.username === userSession.user.username}>
 					<User user={user} />
 					{user.username !== userSession.user.username && (user.isShared ? <TrashFill size={20} /> : <ShareFill size={20} />)}
 				</Button>
@@ -103,21 +103,21 @@ export default function ShareModal({ userSession }) {
 		<div>
 			{!isLoading ? (
 				<>
-					<Button onClick={handleOpen} style={buttonStyle}>
-						Share Room
+					<Button onClick={handleOpen} sx={buttonStyle} variant="contained">
+						Share Room Acces
 					</Button>
 					<Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-						<Box style={style}>
-							<Typography id="modal-modal-title" variant="h6" component="h2" style={{ marginBottom: '15px' }}>
-								Share Room
+						<Box sx={style}>
+							<Typography id="modal-modal-title" variant="h6" component="h2" sx={{ marginBottom: '15px' }}>
+								Share Room Acces
 							</Typography>
-							<TextField id="outlined-basic" label="Search" variant="outlined" value={searchTerm} onChange={handleSearch} fullWidth style={{ marginBottom: '1rem' }} />
-							<div style={{ overflow: 'scroll', height: '80%' }}>{filteredUsers.length > 0 ? renderUserButtons() : <p>No users found</p>}</div>
+							<TextField id="outlined-basic" label="Search" variant="outlined" value={searchTerm} onChange={handleSearch} fullWidth sx={{ marginBottom: '1rem' }} />
+							<Box sx={{ overflow: 'scroll', height: '80%' }}>{filteredUsers.length > 0 ? renderUserButtons() : <p>No users found</p>}</Box>
 						</Box>
 					</Modal>
 				</>
 			) : (
-				<Button style={buttonStyle}>Share Room</Button>
+				<Button sx={buttonStyle}>Share Room</Button>
 			)}
 		</div>
 	);
