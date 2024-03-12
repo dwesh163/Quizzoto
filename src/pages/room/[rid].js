@@ -9,9 +9,9 @@ import { useQRCode } from 'next-qrcode';
 
 import Header from '../../components/header/header';
 import ShareModal from '../../components/share';
-import fetchSession from '../../../lib/fetchSession';
-import SessionTable from '@/components/sessionTable';
-import getSessionResults from '../../../lib/sessions';
+import fetchRoom from '../../../lib/fetchRoom';
+import RoomTable from '@/components/roomTable';
+import getRoomResults from '../../../lib/rooms';
 import { Button } from '@mui/material';
 
 const BoxStyle = {
@@ -77,7 +77,7 @@ export default function Session({ userSession, results }) {
 					<Box gridColumn="span 10" style={BoxStyle}>
 						{quizzs?.statusCode || results === 401 ? (
 							<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-								<p>Merci de fournir un id de session correct dans l'URL.</p>
+								<p>Merci de fournir un id de room correct dans l'URL.</p>
 							</Box>
 						) : quizzs ? (
 							<>
@@ -93,7 +93,7 @@ export default function Session({ userSession, results }) {
 										<QRCode url={new URL(window.location.href).origin + quizzs.link} />
 									</Box>
 								</Box>
-								<SessionTable data={quizzs.results} style={{ width: '100%', height: '100%' }} />
+								<RoomTable data={quizzs.results} style={{ width: '100%', height: '100%' }} />
 							</>
 						) : (
 							<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
@@ -108,10 +108,10 @@ export default function Session({ userSession, results }) {
 }
 
 export async function getServerSideProps(context) {
-	const { sid } = context.params;
+	const { rid } = context.params;
 
 	const session = await getSession(context);
-	const results = await getSessionResults(session, sid);
+	const results = await getRoomResults(session, rid);
 
 	return {
 		props: {

@@ -46,14 +46,14 @@ export default function ShareModal({ userSession }) {
 	};
 
 	const getData = async () => {
-		const response = await fetch(`/api/user/all`, { method: 'POST', body: JSON.stringify({ sessionId: router.query.sid }) });
+		const response = await fetch(`/api/user/all`, { method: 'POST', body: JSON.stringify({ roomId: router.query.rid }) });
 		const jsonData = await response.json();
 		setUsers(jsonData);
 		setIsLoading(false);
 	};
 
 	React.useEffect(() => {
-		if (!router.query.sid) {
+		if (!router.query.rid) {
 			return;
 		}
 
@@ -71,7 +71,7 @@ export default function ShareModal({ userSession }) {
 
 	const shareUser = async (user) => {
 		try {
-			const response = await fetch(`/api/share/${router.query.sid}`, {
+			const response = await fetch(`/api/share/${router.query.rid}`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -104,12 +104,12 @@ export default function ShareModal({ userSession }) {
 			{!isLoading ? (
 				<>
 					<Button onClick={handleOpen} style={buttonStyle}>
-						Share Session
+						Share Room
 					</Button>
 					<Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
 						<Box style={style}>
 							<Typography id="modal-modal-title" variant="h6" component="h2" style={{ marginBottom: '15px' }}>
-								Share Session
+								Share Room
 							</Typography>
 							<TextField id="outlined-basic" label="Search" variant="outlined" value={searchTerm} onChange={handleSearch} fullWidth style={{ marginBottom: '1rem' }} />
 							<div style={{ overflow: 'scroll', height: '80%' }}>{filteredUsers.length > 0 ? renderUserButtons() : <p>No users found</p>}</div>
@@ -117,7 +117,7 @@ export default function ShareModal({ userSession }) {
 					</Modal>
 				</>
 			) : (
-				<Button style={buttonStyle}>Share Session</Button>
+				<Button style={buttonStyle}>Share Room</Button>
 			)}
 		</div>
 	);

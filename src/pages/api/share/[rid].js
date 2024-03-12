@@ -6,16 +6,16 @@ export default async function Share(req, res) {
 	try {
 		const userId = req.body.user._id.toString();
 
-		const session = await db.collection('session').findOne({ id: req.query.sid });
+		const room = await db.collection('rooms').findOne({ id: req.query.rid });
 		const user = await db.collection('users').findOne({ _id: new mongodb.ObjectId(userId) });
 
-		if (!session.share.includes(user.id)) {
-			session.share.push(user.id);
+		if (!room.share.includes(user.id)) {
+			room.share.push(user.id);
 		} else {
-			session.share.splice(session.share.indexOf(user.id), 1);
+			room.share.splice(room.share.indexOf(user.id), 1);
 		}
 
-		await db.collection('session').updateOne({ id: req.query.sid }, { $set: { share: session.share } });
+		await db.collection('rooms').updateOne({ id: req.query.rid }, { $set: { share: room.share } });
 
 		res.status(200).json({ success: true });
 	} catch (error) {
