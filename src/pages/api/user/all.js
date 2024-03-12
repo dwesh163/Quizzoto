@@ -2,7 +2,7 @@ import db from '../../../../lib/mongodb';
 
 var mongodb = require('mongodb');
 
-export default async function Session(req, res) {
+export default async function AllUser(req, res) {
 	if (req.body == '') {
 		const users = await db
 			.collection('users')
@@ -21,11 +21,12 @@ export default async function Session(req, res) {
 
 		return res.status(200).send(users);
 	}
-	const sessionId = JSON.parse(req.body).sessionId;
+	const roomId = JSON.parse(req.body).roomId;
 
 	let newUsers = [];
 
-	const sessions = await db.collection('session').findOne({ id: sessionId });
+	const room = await db.collection('rooms').findOne({ id: roomId });
+
 	const users = await db
 		.collection('users')
 		.find(
@@ -43,7 +44,7 @@ export default async function Session(req, res) {
 		.toArray();
 
 	for (let user of users) {
-		if (sessions.share.includes(user.id)) {
+		if (room.share.includes(user.id)) {
 			user.isShared = true;
 		} else {
 			user.isShared = false;

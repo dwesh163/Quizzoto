@@ -101,7 +101,8 @@ export default function Quizz() {
 	}, [router.query.q]);
 
 	function getResult(UserAnswer) {
-		setQuizzResult(router.query.id, UserAnswer, router.query.s, session)
+		console.log('router.query', router.query);
+		setQuizzResult(router.query.id, UserAnswer, router.query.r, session)
 			.then((result) => {
 				if (!localStorage.getItem('id')) {
 					localStorage.setItem('id', result.player);
@@ -123,7 +124,7 @@ export default function Quizz() {
 		} else {
 			const nextQuestionId = questionId + 1;
 			setQuestionId(nextQuestionId);
-			router.push({ pathname: `/quizz/${router.query.id}`, query: { q: nextQuestionId, s: router.query.s } }, undefined, { shallow: true });
+			router.push({ pathname: `/quizz/${router.query.id}`, query: { q: nextQuestionId, r: router.query.r } }, undefined, { shallow: true });
 		}
 	};
 

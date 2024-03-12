@@ -117,7 +117,7 @@ export default function Welcome({ quizz }) {
 			query: query,
 		});
 	};
-	const handleClickSession = () => {
+	const handleClickRoom = () => {
 		const quizzId = router.query.id;
 		const requestData = {
 			ownerId: session.user.id,
@@ -131,12 +131,12 @@ export default function Welcome({ quizz }) {
 			body: JSON.stringify(requestData),
 		};
 
-		fetch(`/api/session?s=${quizzId}`, requestOptions)
+		fetch(`/api/rooms?s=${quizzId}`, requestOptions)
 			.then((response) => {
 				if (response.ok) {
 					return response.json();
 				} else {
-					throw new Error('Failed to start session');
+					throw new Error('Failed to start room');
 				}
 			})
 			.then((data) => {
@@ -144,11 +144,11 @@ export default function Welcome({ quizz }) {
 				query.s = data.id;
 				query.q = '1';
 				router.push({
-					pathname: `/session/${data.id}`,
+					pathname: `/room/${data.id}`,
 				});
 			})
 			.catch((error) => {
-				console.error('Error starting session:', error);
+				console.error('Error starting room:', error);
 			});
 	};
 
@@ -182,18 +182,12 @@ export default function Welcome({ quizz }) {
 										</Button>
 									</Link>
 									{session != null ? (
-										<Button type="button" onClick={handleClickSession} variant="contained" style={BtnStyleSecondary}>
-											Start a session
+										<Button type="button" onClick={handleClickRoom} variant="contained" style={BtnStyleSecondary}>
+											Start a Room
 										</Button>
 									) : (
 										<></>
 									)}
-
-									{/* <Link href={{ pathname: router.pathname, query: { ...router.query, q: '1' } }} passHref style={{  }}>
-										<Button type="button" onClick={handleClick} variant="contained" style={BtnStyleSecondary}>
-											Start a session
-										</Button>
-									</Link> */}
 								</Box>
 							</Box>
 							<Box gridColumn="span 4">

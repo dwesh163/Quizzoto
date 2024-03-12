@@ -16,21 +16,21 @@ async function getQuizzIdFromSlug(quizzSlug) {
 	return id._id.toString();
 }
 
-export default async function Session(req, res) {
+export default async function Room(req, res) {
 	const quizzId = await getQuizzIdFromSlug(req.query.s);
 
 	const id = uuidv4();
 
-	let newSession = {
+	let newRoom = {
 		id: id,
 		quizzId: quizzId,
 		ownerId: req.body.ownerId,
 		time: Date.now(),
 		share: [],
-		link: await createShortedLink(`/quizz/${req.query.s}?s=${id}&q=1`, req.body.ownerId),
+		link: await createShortedLink(`/quizz/${req.query.s}?r=${id}&q=1`, req.body.ownerId),
 	};
 
-	db.collection('session').insertOne(newSession);
+	db.collection('rooms').insertOne(newRoom);
 
-	return res.status(200).send(newSession);
+	return res.status(200).send(newRoom);
 }

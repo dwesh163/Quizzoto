@@ -32,7 +32,7 @@ const columns = [
 	},
 ];
 
-export default function SessionTable({ data }) {
+export default function RoomTable({ data }) {
 	const [results, setResults] = React.useState([]);
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
