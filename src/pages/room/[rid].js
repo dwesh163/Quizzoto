@@ -58,6 +58,7 @@ export default function Session({ userSession, results, linkInfo, room }) {
 	const [session, setSession] = useState(userSession);
 	const [quizzs, setResult] = useState();
 	const [copied, setCopied] = useState(false);
+	const [isRotating, setIsRotating] = useState(false);
 
 	const router = useRouter();
 
@@ -79,6 +80,12 @@ export default function Session({ userSession, results, linkInfo, room }) {
 			console.error('Failed to copy:', error);
 		}
 	};
+
+	function refreshPage() {
+		setIsRotating(true);
+		setTimeout(() => setIsRotating(false), 1000);
+		router.replace(router.asPath);
+	}
 
 	return (
 		<>
@@ -102,7 +109,18 @@ export default function Session({ userSession, results, linkInfo, room }) {
 						) : quizzs ? (
 							<>
 								<Box gridColumn="span 12" display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
-									<ArrowRepeat size={30} style={{ position: 'absolute', cursor: 'pointer', right: '40px', marginTop: '15px' }} />
+									<ArrowRepeat
+										size={30}
+										style={{
+											position: 'absolute',
+											cursor: 'pointer',
+											right: '40px',
+											marginTop: '15px',
+											animation: isRotating ? 'rotation 1s ease' : '',
+											transformOrigin: 'center',
+										}}
+										onClick={refreshPage}
+									/>
 									<Box gridColumn="span 8">
 										<h1>{quizzs.quizzTitle}</h1>
 										<Box sx={{ display: 'flex', gap: '12px' }}>
