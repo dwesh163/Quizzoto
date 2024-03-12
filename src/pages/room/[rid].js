@@ -50,7 +50,7 @@ function QRCode({ url }) {
 	);
 }
 
-export default function Session({ userSession, results, linkInfo }) {
+export default function Session({ userSession, results, linkInfo, room }) {
 	const [session, setSession] = useState(userSession);
 	const [quizzs, setResult] = useState();
 
@@ -99,6 +99,39 @@ export default function Session({ userSession, results, linkInfo }) {
 											{/* <QRCode url={new URL(window.location.href).origin + linkInfo.linkShort} /> */}
 										</Box>
 									</Box>
+									<Box gridColumn="span 4" style={{ display: 'flex', alignItems: 'center', height: '200px' }}>
+										<table>
+											<thead>
+												<tr>
+													<td>Room Creator</td>
+													<td>Quizz Creator</td>
+													<td>Link Open</td>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>
+														<div>
+															<User scale={'80%'} user={room.user} />
+														</div>
+													</td>
+													<td>
+														<div>
+															<User scale={'80%'} user={quizzs.user} />
+														</div>
+													</td>
+													<td style={{ textAlign: 'center' }}>
+														<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '66px' }}>{linkInfo.used}</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+
+										{/* <a target="_blank" href={new URL(window.location.href).origin + linkInfo.linkShort}>
+											{linkInfo.linkShort}
+										</a> */}
+										{/* <QRCode url={new URL(window.location.href).origin + linkInfo.linkShort} /> */}
+									</Box>
 								</Box>
 								<RoomTable data={quizzs.results} sx={{ width: '100%', height: '100%' }} />
 							</>
@@ -119,13 +152,14 @@ export async function getServerSideProps(context) {
 
 	const session = await getSession(context);
 	const results = await getRoomResults(session, rid);
-	const linkInfo = await getLinkInfo(rid, session);
+	const room = await getRoomInfo(session, rid);
 
 	return {
 		props: {
 			userSession: session ?? null,
 			results,
 			linkInfo,
+			room,
 		},
 	};
 }
