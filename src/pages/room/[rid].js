@@ -152,6 +152,7 @@ export async function getServerSideProps(context) {
 
 	const session = await getSession(context);
 	const results = await getRoomResults(session, rid);
+	const linkInfo = await getLinkInfo(session, rid);
 	const room = await getRoomInfo(session, rid);
 
 	return {
