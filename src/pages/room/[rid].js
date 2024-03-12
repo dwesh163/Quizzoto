@@ -13,6 +13,9 @@ import fetchRoom from '../../../lib/fetchRoom';
 import RoomTable from '@/components/roomTable';
 import getRoomResults from '../../../lib/rooms';
 import { Button } from '@mui/material';
+import { getLinkInfo } from '../../../lib/links';
+
+import { ArrowRepeat } from 'react-bootstrap-icons';
 
 const BoxStyle = {
 	borderRadius: '30px',
@@ -47,7 +50,7 @@ function QRCode({ url }) {
 	);
 }
 
-export default function Session({ userSession, results }) {
+export default function Session({ userSession, results, linkInfo }) {
 	const [session, setSession] = useState(userSession);
 	const [quizzs, setResult] = useState();
 
@@ -74,7 +77,7 @@ export default function Session({ userSession, results }) {
 				<Header />
 				<Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
 					<Box gridColumn="span 2"></Box>
-					<Box gridColumn="span 10" style={BoxStyle}>
+					<Box gridColumn="span 10" sx={BoxStyle}>
 						{quizzs?.statusCode || results === 401 ? (
 							<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
 								<p>Merci de fournir un id de room correct dans l'URL.</p>
@@ -82,18 +85,22 @@ export default function Session({ userSession, results }) {
 						) : quizzs ? (
 							<>
 								<Box gridColumn="span 12" display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+									<ArrowRepeat size={30} style={{ position: 'absolute', cursor: 'pointer', right: '40px', marginTop: '15px' }} />
 									<Box gridColumn="span 6">
 										<h1>{quizzs.quizzTitle}</h1>
-									</Box>
-									<Box gridColumn="span 6" style={{ display: 'flex', alignItems: 'center' }}>
 										<ShareModal userSession={userSession} />
-										<a target="_blank" href={new URL(window.location.href).origin + quizzs.link}>
-											{new URL(window.location.href).origin + quizzs.link}
-										</a>
-										<QRCode url={new URL(window.location.href).origin + quizzs.link} />
+									</Box>
+									<Box gridColumn="span 6" style={{ display: 'flex', alignItems: 'center', height: '200px' }}>
+										<Box sx={{ display: 'flex' }}>
+											<span style={{ width: '90px' }}>used : {linkInfo.used}</span>
+											<a target="_blank" href={new URL(window.location.href).origin + linkInfo.linkShort}>
+												{linkInfo.linkShort}
+											</a>
+											{/* <QRCode url={new URL(window.location.href).origin + linkInfo.linkShort} /> */}
+										</Box>
 									</Box>
 								</Box>
-								<RoomTable data={quizzs.results} style={{ width: '100%', height: '100%' }} />
+								<RoomTable data={quizzs.results} sx={{ width: '100%', height: '100%' }} />
 							</>
 						) : (
 							<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
@@ -112,11 +119,13 @@ export async function getServerSideProps(context) {
 
 	const session = await getSession(context);
 	const results = await getRoomResults(session, rid);
+	const linkInfo = await getLinkInfo(rid, session);
 
 	return {
 		props: {
 			userSession: session ?? null,
 			results,
+			linkInfo,
 		},
 	};
 }
