@@ -11,11 +11,15 @@ import Header from '../../components/header/header';
 import ShareModal from '../../components/share';
 import fetchRoom from '../../../lib/fetchRoom';
 import RoomTable from '@/components/roomTable';
-import getRoomResults from '../../../lib/rooms';
+import getRoomResults, { getRoomInfo } from '../../../lib/rooms';
 import { Button } from '@mui/material';
 import { getLinkInfo } from '../../../lib/links';
 
 import { ArrowRepeat } from 'react-bootstrap-icons';
+
+import User from '../../components/header/user';
+
+import copy from 'clipboard-copy';
 
 const BoxStyle = {
 	borderRadius: '30px',
@@ -53,6 +57,7 @@ function QRCode({ url }) {
 export default function Session({ userSession, results, linkInfo, room }) {
 	const [session, setSession] = useState(userSession);
 	const [quizzs, setResult] = useState();
+	const [copied, setCopied] = useState(false);
 
 	const router = useRouter();
 
@@ -62,6 +67,18 @@ export default function Session({ userSession, results, linkInfo, room }) {
 		}
 		setResult(JSON.parse(results));
 	}, [results]);
+
+	const copyToClipboard = async () => {
+		try {
+			await copy(new URL(window.location.href).origin + linkInfo.linkShort);
+			setCopied(true);
+			setTimeout(() => {
+				setCopied(false);
+			}, 4000);
+		} catch (error) {
+			console.error('Failed to copy:', error);
+		}
+	};
 
 	return (
 		<>
@@ -86,17 +103,18 @@ export default function Session({ userSession, results, linkInfo, room }) {
 							<>
 								<Box gridColumn="span 12" display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
 									<ArrowRepeat size={30} style={{ position: 'absolute', cursor: 'pointer', right: '40px', marginTop: '15px' }} />
-									<Box gridColumn="span 6">
+									<Box gridColumn="span 8">
 										<h1>{quizzs.quizzTitle}</h1>
-										<ShareModal userSession={userSession} />
-									</Box>
-									<Box gridColumn="span 6" style={{ display: 'flex', alignItems: 'center', height: '200px' }}>
-										<Box sx={{ display: 'flex' }}>
-											<span style={{ width: '90px' }}>used : {linkInfo.used}</span>
-											<a target="_blank" href={new URL(window.location.href).origin + linkInfo.linkShort}>
-												{linkInfo.linkShort}
-											</a>
-											{/* <QRCode url={new URL(window.location.href).origin + linkInfo.linkShort} /> */}
+										<Box sx={{ display: 'flex', gap: '12px' }}>
+											<ShareModal userSession={userSession} />
+											<Box>
+												<Button variant="contained">Open Invite menu</Button>
+											</Box>
+											<Box>
+												<Button variant="contained" onClick={copyToClipboard}>
+													{copied ? 'Copied!' : 'Copy link'}
+												</Button>
+											</Box>
 										</Box>
 									</Box>
 									<Box gridColumn="span 4" style={{ display: 'flex', alignItems: 'center', height: '200px' }}>
