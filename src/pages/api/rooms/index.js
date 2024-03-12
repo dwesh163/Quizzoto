@@ -27,7 +27,7 @@ export default async function Room(req, res) {
 		ownerId: req.body.ownerId,
 		time: Date.now(),
 		share: [],
-		link: await createShortedLink(`/quizz/${req.query.s}?r=${id}&q=1`, req.body.ownerId),
+		link: await createShortedLink(`/quizz/${req.query.s}?r=${id}&q=1`, req.body.ownerId, id),
 	};
 
 	db.collection('rooms').insertOne(newRoom);
