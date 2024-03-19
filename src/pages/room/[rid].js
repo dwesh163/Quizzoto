@@ -171,9 +171,10 @@ export async function getServerSideProps(context) {
 	const linkInfo = await getLinkInfo(session, rid);
 	const room = await getRoomInfo(session, rid);
 
-	const url = context['req']['headers']['x-forwarded-proto'] + '://' + context.req.headers.host + '/join/' + linkInfo.linkShort.split('/')[2];
-
-	linkInfo.join = url;
+	if (linkInfo != 401) {
+		const url = context['req']['headers']['x-forwarded-proto'] + '://' + context.req.headers.host + '/join/' + linkInfo.linkShort.split('/')[2];
+		linkInfo.join = url;
+	}
 
 	return {
 		props: {
