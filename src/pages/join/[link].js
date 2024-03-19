@@ -67,7 +67,9 @@ export default function Link({ quizz, url }) {
 							</tr>
 						</tbody>
 					</table> */}
-					<p style={{ marginBottom: '10vh' }}>{url}</p>
+					<a href={url} style={{ marginBottom: '10vh' }}>
+						{url}
+					</a>
 				</Box>
 			</main>
 		</>
