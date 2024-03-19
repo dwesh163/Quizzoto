@@ -181,6 +181,9 @@ export default function Page({ userSession, userData }) {
 										<Button href={'/quizzs/' + user.username} variant="contained">
 											Quizz
 										</Button>
+										<Button href={'/create'} variant="contained">
+											Create a new Quizz
+										</Button>
 									</Box>
 								</Box>
 							) : (
