@@ -74,23 +74,23 @@ export default async function handler(req, res) {
 		}
 		switch (question.questionType) {
 			case 'radios':
-				if (answers[index.toString()] == null) {
+				if (answers[index.toString()][0] == null) {
 					score = score - question.minusPointsIfWrong;
 					return results.push({
 						questionTitle: question.questionTitle,
 						answeredCorrectly: false,
 						points: `-${question.minusPointsIfWrong}`,
-						userAnswer: answers[index.toString()],
+						userAnswer: answers[index.toString()][0],
 						correctAnswer: question.correctAnswer,
 					});
 				}
-				score = answers[index.toString()].toLowerCase() == question.correctAnswer.toLowerCase() ? score + question.pointsIfCorrect : score - question.minusPointsIfWrong;
+				score = answers[index.toString()][0].toLowerCase() == question.correctAnswer[0].toLowerCase() ? score + question.pointsIfCorrect : score - question.minusPointsIfWrong;
 				results.push({
 					questionTitle: question.questionTitle,
-					answeredCorrectly: answers[index.toString()].toLowerCase() == question.correctAnswer.toLowerCase() ? true : false,
-					points: answers[index.toString()].toLowerCase() == question.correctAnswer.toLowerCase() ? `+${question.pointsIfCorrect}` : `-${question.minusPointsIfWrong}`,
-					userAnswer: answers[index.toString()],
-					correctAnswer: question.correctAnswer,
+					answeredCorrectly: answers[index.toString()][0].toLowerCase() == question.correctAnswer[0].toLowerCase() ? true : false,
+					points: answers[index.toString()][0].toLowerCase() == question.correctAnswer[0].toLowerCase() ? `+${question.pointsIfCorrect}` : `-${question.minusPointsIfWrong}`,
+					userAnswer: answers[index.toString()][0],
+					correctAnswer: question.correctAnswer[0],
 				});
 				break;
 			case 'checkboxes':
