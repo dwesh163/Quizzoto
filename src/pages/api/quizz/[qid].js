@@ -33,6 +33,7 @@ export default async function handler(req, res) {
 				quizzDescription: 1,
 				quizzImg: 1,
 				quizzInfo: 1,
+				creator: 1,
 				'questions.questionTitle': 1,
 				'questions.questionType': 1,
 				'questions.answers': 1,
@@ -43,6 +44,8 @@ export default async function handler(req, res) {
 	if (quizz == null) {
 		return res.status(422).json({ statusCode: 422, message: `Please provide a valid quizz's object id.` });
 	} else {
+		const creator = await db.collection('users').findOne({ id: quizz.creator });
+
 		if (req.query.q !== 'timeline') {
 			if (req.query.q == NaN || !req.query.q) {
 				req.query.q = 1;
@@ -53,6 +56,10 @@ export default async function handler(req, res) {
 				return res.status(422).json({ statusCode: 422, message: `Please provide a valid question index.` });
 			}
 			quizz.questions = quizz.questions[questionIndex - 1];
+			quizz.creator = {
+				username: creator.username,
+				image: creator.image,
+			};
 		}
 	}
 

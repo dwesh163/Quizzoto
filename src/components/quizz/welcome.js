@@ -6,6 +6,7 @@ import { Button } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import Rank from './rank';
 import { useSession } from 'next-auth/react';
+import User from '../header/user';
 
 const BoxStyle = {
 	borderRadius: '30px',
@@ -85,7 +86,7 @@ const BtnStyleSecondary = {
 	alignSelf: 'flex-end',
 };
 
-const QuizzInfo = ({ quizzInfo }) => {
+const QuizzInfo = ({ quizzInfo, user }) => {
 	return (
 		<table>
 			<tbody>
@@ -97,6 +98,13 @@ const QuizzInfo = ({ quizzInfo }) => {
 						</td>
 					</tr>
 				))}
+				<tr>
+					<td style={{ fontWeight: '600', padding: '10px 0px', fontSize: '1.5rem' }}>Creator</td>
+
+					<td style={{ paddingLeft: '30px' }}>
+						<User user={user} scale={'90%'} style={{ height: 'auto' }} />
+					</td>
+				</tr>
 			</tbody>
 		</table>
 	);
@@ -170,7 +178,7 @@ export default function Welcome({ quizz }) {
 									</Box>
 
 									<Box gridColumn="span 6" style={{ marginLeft: '25px' }}>
-										<QuizzInfo quizzInfo={quizz.quizzInfo} />
+										<QuizzInfo quizzInfo={quizz.quizzInfo} user={quizz.creator} />
 									</Box>
 								</Box>
 								<h3> Instructions</h3>
